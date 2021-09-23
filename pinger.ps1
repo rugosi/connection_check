@@ -2,8 +2,10 @@ $badconnection = $false
 $starttime = $none
 $endtime = $none
 $counter = 0
-$firstrun = Get-Date -Format "yyyy.MM.dd_HH:mm:ss"
-$firstrun = "connection.log." + $firstrun
+
+$firstrun = Get-Date -Format "yyyyMMdd_HH_mm_ss"
+$firstrun = "connection.log." + $firstrun + ".txt"
+write-host "Logging to " $firstrun
 $1sec = 10000000
 $debug = $false
 
@@ -27,11 +29,11 @@ function Print-Connection-Status {
 
 while ($true) {
 
-  $result = (Test-Connection -IPv4 -TargetName "index.hu" -Count 1 -TimeoutSeconds 1 -Quiet)
+  $result = (Test-Connection -ComputerName "index.hu" -Count 1  -Quiet)
   $counter++
 
 #  DEBUG
-  if ($debug -eq $true -and $counter -gt 2 -and $counter -lt 6)
+  if ($debug -eq $true -and $counter -gt 1 -and $counter -lt 4)
   {
     $result = $false
   }
@@ -55,7 +57,8 @@ while ($true) {
         $end = Get-Date -Date $endtime
         $diff = $end - $begin + $1sec
         write-host -ForegroundColor yellow "In degraded mode: " $starttime " -> " $endtime " = " $diff
-        write-output $starttime";"$endtime";"$diff >> .\$firstrun
+        $toWrite = $starttime + ";" + $endtime + ";" + $diff
+         $toWrite >> $firstrun
         $badconnection = $false
       }
 
