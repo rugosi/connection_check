@@ -3,8 +3,7 @@ $starttime = $none
 $endtime = $none
 $counter = 0
 
-$firstrun = Get-Date -Format "yyyyMMdd_HH_mm_ss"
-$firstrun = "connection.log." + $firstrun + ".txt"
+$firstrun = "connection.log"
 write-host "Logging to " $firstrun
 $1sec = 10000000
 $debug = $false
@@ -58,7 +57,7 @@ while ($true) {
         $diff = $end - $begin + $1sec
         write-host -ForegroundColor yellow "In degraded mode: " $starttime " -> " $endtime " = " $diff
         $toWrite = $starttime + ";" + $endtime + ";" + $diff
-         $toWrite >> $firstrun
+        $toWrite >> $firstrun
         $badconnection = $false
       }
 
@@ -69,8 +68,8 @@ while ($true) {
 
   if ([console]::KeyAvailable)
   {
-    write-host -ForegroundColor yellow "Key pressed. End."
-    write-host
-    break
+     write-host -ForegroundColor yellow "Key pressed. End."
+     write-host
+     break
   }
 }
